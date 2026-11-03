@@ -12,5 +12,9 @@ spring:
       ddl-auto: create-drop
     open-in-view: false
 
+  # Caching is enabled per environment; see application-production.yml.
+  cache:
+    type: none
+
 inventory:
   base-url: http://localhost:8089

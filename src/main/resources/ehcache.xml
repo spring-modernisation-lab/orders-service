@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+         updateCheck="false">
+
+    <defaultCache
+            maxEntriesLocalHeap="100"
+            timeToLiveSeconds="120"/>
+
+    <!-- Stock levels change often: keep them for 30 seconds at most. -->
+    <cache name="inventoryAvailability"
+           maxEntriesLocalHeap="1000"
+           timeToLiveSeconds="30"
+           memoryStoreEvictionPolicy="LRU"/>
+
+</ehcache>

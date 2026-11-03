@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+         updateCheck="false">
+
+    <defaultCache
+            maxEntriesLocalHeap="100"
+            timeToLiveSeconds="120"/>
+
+    <!-- Same cache as production with a short time-to-live, so tests can observe expiry. -->
+    <cache name="inventoryAvailability"
+           maxEntriesLocalHeap="1000"
+           timeToLiveSeconds="1"
+           memoryStoreEvictionPolicy="LRU"/>
+
+</ehcache>
