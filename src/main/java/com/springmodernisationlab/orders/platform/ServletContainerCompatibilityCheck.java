@@ -17,9 +17,9 @@ public class ServletContainerCompatibilityCheck implements InitializingBean {
             LoggerFactory.getLogger(ServletContainerCompatibilityCheck.class);
 
     private static final String[] REQUIRED_SERVLET_TYPES = {
-            "javax.servlet.http.HttpServletRequest",
-            "javax.servlet.http.HttpServletResponse",
-            "javax.servlet.Filter"
+            "jakarta.servlet.http.HttpServletRequest",
+            "jakarta.servlet.http.HttpServletResponse",
+            "jakarta.servlet.Filter"
     };
 
     @Override

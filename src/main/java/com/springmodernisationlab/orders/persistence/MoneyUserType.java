@@ -14,59 +14,46 @@ import java.util.Objects;
 /**
  * Persists {@link Money} in a single VARCHAR column as "amount currency".
  */
-public class MoneyUserType implements UserType {
-
-    private static final int[] SQL_TYPES = {Types.VARCHAR};
+public class MoneyUserType implements UserType<Money> {
 
     @Override
-    public int[] sqlTypes() {
-        return SQL_TYPES.clone();
+    public int getSqlType() {
+        return Types.VARCHAR;
     }
 
     @Override
-    public Class<?> returnedClass() {
+    public Class<Money> returnedClass() {
         return Money.class;
     }
 
     @Override
-    public boolean equals(Object x, Object y) {
+    public boolean equals(Money x, Money y) {
         return Objects.equals(x, y);
     }
 
     @Override
-    public int hashCode(Object x) {
+    public int hashCode(Money x) {
         return Objects.hashCode(x);
     }
 
     @Override
-    public Object nullSafeGet(
-            ResultSet resultSet,
-            String[] names,
-            SharedSessionContractImplementor session,
-            Object owner) throws SQLException {
-
-        String value = resultSet.getString(names[0]);
-
+    public Money nullSafeGet(ResultSet resultSet, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
+        String value = resultSet.getString(position);
         return value == null ? null : Money.parse(value);
     }
 
     @Override
-    public void nullSafeSet(
-            PreparedStatement statement,
-            Object value,
-            int index,
-            SharedSessionContractImplementor session) throws SQLException {
-
+    public void nullSafeSet(PreparedStatement statement, Money value, int index, SharedSessionContractImplementor session) throws SQLException {
         if (value == null) {
             statement.setNull(index, Types.VARCHAR);
             return;
         }
 
-        statement.setString(index, ((Money) value).format());
+        statement.setString(index, value.format());
     }
 
     @Override
-    public Object deepCopy(Object value) {
+    public Money deepCopy(Money value) {
         // Money is immutable.
         return value;
     }
@@ -77,17 +64,17 @@ public class MoneyUserType implements UserType {
     }
 
     @Override
-    public Serializable disassemble(Object value) {
+    public Serializable disassemble(Money value) {
         return (Serializable) value;
     }
 
     @Override
-    public Object assemble(Serializable cached, Object owner) {
-        return cached;
+    public Money assemble(Serializable cached, Object owner) {
+        return (Money) cached;
     }
 
     @Override
-    public Object replace(Object original, Object target, Object owner) {
+    public Money replace(Money original, Money target, Object owner) {
         return original;
     }
 }
