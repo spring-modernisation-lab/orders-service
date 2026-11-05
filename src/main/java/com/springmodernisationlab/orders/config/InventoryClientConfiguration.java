@@ -1,8 +1,8 @@
 package com.springmodernisationlab.orders.config;
 
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -18,17 +18,23 @@ public class InventoryClientConfiguration {
     @Bean
     public CloseableHttpClient inventoryHttpClient() {
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(2_000)
-                .setConnectionRequestTimeout(1_000)
-                .setSocketTimeout(5_000)
+                .setConnectTimeout(2_000, TimeUnit.MILLISECONDS)
+                .setConnectionRequestTimeout(1_000, TimeUnit.MILLISECONDS)
+                .setResponseTimeout(5_000, TimeUnit.MILLISECONDS)
                 .build();
+
+        org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager connectionManager = new org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager();
+        connectionManager.setMaxTotal(50);
+        connectionManager.setDefaultMaxPerRoute(20);
+        connectionManager.setDefaultConnectionConfig(
+                org.apache.hc.client5.http.config.ConnectionConfig.custom()
+                        .setTimeToLive(30, TimeUnit.SECONDS)
+                        .build());
 
         return HttpClients.custom()
                 .setDefaultRequestConfig(requestConfig)
-                .setMaxConnTotal(50)
-                .setMaxConnPerRoute(20)
-                .setConnectionTimeToLive(30, TimeUnit.SECONDS)
-                .evictIdleConnections(60, TimeUnit.SECONDS)
+                .setConnectionManager(connectionManager)
+                .evictIdleConnections(org.apache.hc.core5.util.TimeValue.ofSeconds(60))
                 .build();
     }
 
