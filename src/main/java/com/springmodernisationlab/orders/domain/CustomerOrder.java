@@ -1,15 +1,15 @@
 package com.springmodernisationlab.orders.domain;
 
 import org.hibernate.annotations.Type;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.springmodernisationlab.orders.persistence.MoneyUserType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "customer_orders")
@@ -22,7 +22,7 @@ public class CustomerOrder {
     @Column(nullable = false, unique = true, length = 64)
     private String reference;
 
-    @Type(type = "com.springmodernisationlab.orders.persistence.MoneyUserType")
+    @Type(MoneyUserType.class)
     @Column(name = "total", nullable = false, length = 32)
     private Money total;
 
